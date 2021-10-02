@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Impiccato</title>
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript">
+var count_tentativi=1;
+var tentativi=10;
+var parola='acciderbolina';
+var lunghezza_parola=0;
+	function solve(letter){
+		var found=0;
+		if(count_tentativi<10){
+			$(".letter").each(function(){
+				if($(this).html()==letter && $(this).attr("data-found")=='no'){
+					$(this).css("visibility","visible");
+					found=1;
+					lunghezza_parola--;
+					console.log("tolta");
+					$(this).attr("data-found","yes");
+					if(lunghezza_parola==0){
+						$("#tentativi").empty();
+						$("#tentativi").html("Vittoria!");
+					}
+						
+				}		
+			});
+			if(found==0)
+				death();
+		}else{
+			$("#tentativi").empty();
+			$("#tentativi").html("Perso, fai una nuova partita");
+		}
+	};
+	
+	function death(){
+			$("#tentativi").empty();
+			$("#tentativi").html("Errori: "+count_tentativi+" su "+tentativi+" tentativi");
+			count_tentativi++;
+	};
+	
+	function new_game(){
+		count_tentativi=1;
+		$("#tentativi").empty();
+		$("#word_container").empty();
+		var word_string = parola.split(""); 
+		var to_print='';
+		lunghezza_parola=parola.length;
+		for(var i=0; i<parola.length; i++)
+			to_print+='<div class="border"><div class="letter" data-found="no">'+parola[i]+'</div></div>';
+		$("#word_container").html(to_print);
+	};
+	
+	$(document).ready(function(){
+		new_game();
+		
+		$(document).on('click','#new_game',function(event){
+			new_game();
+		});
+		
+		$(document).bind('keypress', function(e) {
+			var code = e.keyCode || e.which;
+ 			if(code == 97) solve("a");
+			if(code == 98) solve("b");
+			if(code == 99) solve("c");
+			if(code == 100) solve("d");
+			if(code == 101) solve("e");
+			if(code == 102) solve("f");
+			if(code == 103) solve("g");
+			if(code == 104) solve("h");
+			if(code == 105) solve("i");
+			if(code == 106) solve("j");
+			if(code == 107) solve("k");
+			if(code == 108) solve("l");
+			if(code == 109) solve("m");
+			if(code == 110) solve("n");
+			if(code == 111) solve("o");
+			if(code == 112) solve("p");
+			if(code == 113) solve("q");
+			if(code == 114) solve("r");
+			if(code == 115) solve("s");
+			if(code == 116) solve("t");
+			if(code == 117) solve("u");
+			if(code == 118) solve("v");
+			if(code == 119) solve("w");
+			if(code == 120) solve("x");
+			if(code == 121) solve("y");
+			if(code == 122) solve("z");
+ 		});
+		$(document).on('click','#new_word',function(event){
+			$("#box_set_word").fadeIn();
+		});
+		
+		$(document).on('click','#send_new_word',function(event){
+			parola=$("#text_new_word").val();
+			$("#box_set_word").fadeOut();
+			new_game();
+		});
+	});
+</script>
+<style>
+	html{font-family:Verdana, sans-serif;}
+	.letter{visibility:hidden; font-size:36px;}
+	.border{border-bottom:1px solid #000000; float:left; margin:5px; width:20px; text-align:center;}
+	#box_set_word{display:none; position:fixed; top:30%; left:50%; border: solid 2px #E91115; padding:10px;}
+</style>
+</head>
+<body>
+	<div id="word_container">
+	</div>
+    <div style="clear:both;"></div>
+	<br>
+	<div id="tentativi"></div><br>
+	<button id="new_game">New game</button>
+    <button id="new_word">Set new word</button>
+    <div id="box_set_word">
+    	<strong>Set new word</strong><br>
+        <input type="text" id="text_new_word">
+        <button id="send_new_word">Set</button>
+        </div>
+</body>
+</html>
